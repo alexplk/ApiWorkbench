@@ -1,0 +1,88 @@
+openapi: '3.0.2'
+info:
+  title: Example 1
+  version: '1.0'
+
+servers:
+  - url: https://api.server.test/v1
+
+paths:
+  /drawing:
+    get:
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Drawing"
+
+
+components:
+  schemas:
+
+    Drawing:
+      type: object
+      properties:
+        shapes:
+          type: array
+          items:
+            $ref: "#/components/schemas/Shape"
+
+    Point:
+      type: object
+      properties:
+        x:
+          type: integer
+        y:
+          type: integer
+
+    Size:
+      type: object
+      properties:
+        width:
+          type: integer
+          minimum: 0
+        height:
+          type: integer
+          minimum: 0
+
+    Shape:
+      oneOf:
+        - $ref: "#/components/schemas/Square"
+        - $ref: "#/components/schemas/Circle"
+        - $ref: "#/components/schemas/Line"
+
+    Square:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [Square]
+        center:
+          $ref: "#/components/schemas/Point"
+        size:
+          $ref: "#/components/schemas/Size"
+
+    Circle:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [Circle]
+        center:
+          $ref: "#/components/schemas/Point"
+        radius:
+          type: integer
+          minimum: 0
+
+    Line:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [Line]
+        a:
+          $ref: "#/components/schemas/Point"
+        b:
+          $ref: "#/components/schemas/Point"
